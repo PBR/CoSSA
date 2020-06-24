@@ -1,10 +1,4 @@
-#$ -q stat.q
-#$ -S /bin/bash
-#$ -M danny.esselink@wur.nl
-#$ -m be
-#$ -pe sharedmem 5
-
-cd /media/scratchpad_01/essel002/CoSSA
+#!/bin/bash 
 
 ############################################################################
 # for each genotype listed in the genotypes.list KMC3 will count the 
@@ -33,13 +27,9 @@ then
    exit 0
 fi
 
-### activate conda environment
-source ~/anaconda3/etc/profile.d/conda.sh
-conda activate CoSSA
 
 ##########################################
-# convert and alignment of selected k-mers
-# to genome sequence
+# count kmers of each ample in genotype.list
 ##########################################
 
 while read line
@@ -63,6 +53,3 @@ do
 	cd ../../
 
 done < genotypes.list
-
-### deactivate environment
-conda deactivate

@@ -31,5 +31,9 @@ infile2=$(echo "$2" | sed 's/\.kmc_...//')
 sample1="$(basename -- $infile1)"
 sample2="$(basename -- $infile2)"
 
+### create workdir for kmc_tools results
+wkdir="k-mer_manipulations"
+mkdir -p ${wkdir}
+
 ### run kmc_tools intersection of kmers between sample1 and sample2
-kmc_tools -t 5 simple ${infile1} ${infile2} intersect ${sample1}.${sample2}.intersect
+kmc_tools -t 5 simple ${infile1} ${infile2} intersect ${wkdir}/${sample1}.${sample2}.intersect

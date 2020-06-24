@@ -30,6 +30,10 @@ infile2=$(echo "$2" | sed 's/\.kmc_...//')
 sample1="$(basename -- $infile1)"
 sample2="$(basename -- $infile2)"
 
+### create workdir for kmc_tools results
+wkdir="k-mer_manipulations"
+mkdir -p ${wkdir}
+
 ### run kmc_tools substract kmers of sample1 with kmers of sample2 to obtain sample1 specific kmers
-kmc_tools -t 5 simple ${infile1} ${infile2} kmers_subtract ${sample1}.${sample2}.subtract
+kmc_tools -t 5 simple ${infile1} ${infile2} kmers_subtract ${wkdir}/${sample1}.${sample2}.subtract
 

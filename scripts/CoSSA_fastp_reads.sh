@@ -27,8 +27,7 @@ then
 fi
 
 ##########################################
-# convert and alignment of selected k-mers
-# to genome sequence
+# read quality check using FASTP
 ##########################################
 while read line
 do

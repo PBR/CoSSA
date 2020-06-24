@@ -23,5 +23,7 @@ fi
 ##########################################
 # kmer coverage analysis
 ##########################################
-bin/alfred count_dna -o $1.cov.gz $1
+cd bamfiles
+
+alfred count_dna -o $1.cov.gz $1
 plot_kmercov_chr11.R $1.cov.gz
