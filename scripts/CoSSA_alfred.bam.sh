@@ -20,6 +20,9 @@ then
    exit 0
 fi
 
+
+chmod +x ./miniconda/envs/CoSSA/bin/alfred_v0.2.1_linux_x86_64bit
+
 ##########################################
 # kmer coverage analysis
 ##########################################

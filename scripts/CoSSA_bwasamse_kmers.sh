@@ -36,7 +36,7 @@ gzip > ${sample}.fa.gz
 
 ### align kmers, remove duplicate kmers and store in dir bamfiles
 mkdir -p ../bamfiles
-bwa aln -n 3 -t 5 ${ref} ${sample}.fa.gz > ${sample}.sai
+bwa aln -n 3 ${ref} ${sample}.fa.gz > ${sample}.sai
 bwa samse ${ref} ${sample}.sai ${sample}.fa.gz | \
 samtools view -Sbh - | \
 samtools fixmate -m - | \ 

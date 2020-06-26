@@ -35,4 +35,4 @@ wkdir="k-mer_manipulations"
 mkdir -p ${wkdir}
 
 ### run kmc_tools with high and low frequency cut off kmers 
-kmc_tools -t 5 transform  ${infile} reduce -ci${low_cutoff} -cx${high_cutoff} ${wkdir}/${sample}.cutoffs.${low_cutoff}.${high_cutoff}
+kmc_tools transform  ${infile} reduce -ci${low_cutoff} -cx${high_cutoff} ${wkdir}/${sample}.cutoffs.${low_cutoff}.${high_cutoff}

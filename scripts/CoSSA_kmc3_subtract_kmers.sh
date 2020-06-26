@@ -35,5 +35,5 @@ wkdir="k-mer_manipulations"
 mkdir -p ${wkdir}
 
 ### run kmc_tools substract kmers of sample1 with kmers of sample2 to obtain sample1 specific kmers
-kmc_tools -t 5 simple ${infile1} ${infile2} kmers_subtract ${wkdir}/${sample1}.${sample2}.subtract
+kmc_tools simple ${infile1} ${infile2} kmers_subtract ${wkdir}/${sample1}.${sample2}.subtract
 

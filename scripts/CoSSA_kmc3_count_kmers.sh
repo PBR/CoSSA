@@ -31,6 +31,7 @@ fi
 ##########################################
 # count kmers of each ample in genotype.list
 ##########################################
+cd rawreads
 
 while read line
 do
@@ -46,10 +47,10 @@ do
 
         ### run kmc3
 	mkdir -p kmc_tmp
-	kmc -k31 -m2 @seqfiles.list ${sample} kmc_tmp -t 5 > kmc.log
+	kmc -k31 -m2 @seqfiles.list ${sample} kmc_tmp > kmc.log
 
 	### create k-mer histogram
-	kmc_tools -t 5 transform ${sample} histogram ${sample}.kmc3.histo
+	kmc_tools transform ${sample} histogram ${sample}.kmc3.histo
 	cd ../../
 
 done < genotypes.list

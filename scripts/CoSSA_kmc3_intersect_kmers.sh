@@ -36,4 +36,4 @@ wkdir="k-mer_manipulations"
 mkdir -p ${wkdir}
 
 ### run kmc_tools intersection of kmers between sample1 and sample2
-kmc_tools -t 5 simple ${infile1} ${infile2} intersect ${wkdir}/${sample1}.${sample2}.intersect
+kmc_tools simple ${infile1} ${infile2} intersect ${wkdir}/${sample1}.${sample2}.intersect
