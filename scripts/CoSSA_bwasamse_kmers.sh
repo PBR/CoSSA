@@ -30,16 +30,16 @@ infile=$2
 sample="$(basename -- $2)"
 
 ### convert kmers to fasta format
-kmc_tools -hp transform ${infile} dump /dev/stdout | \
-awk '{ print ">" FNR "\n" $1 }' | \
-gzip > ${sample}.fa.gz
+kmc_tools -hp transform ${infile} dump ${infile}.dump
+awk '{ print ">" FNR "\n" $1}' ${infile}.dump | \
+gzip > ${infile}.fa.gz
 
 ### align kmers, remove duplicate kmers and store in dir bamfiles
-mkdir -p ../bamfiles
-bwa aln -n 3 ${ref} ${sample}.fa.gz > ${sample}.sai
-bwa samse ${ref} ${sample}.sai ${sample}.fa.gz | \
+mkdir -p bamfiles
+bwa aln -n 3 ${ref} ${infile}.fa.gz > ${infile}.sai
+bwa samse ${ref} ${infile}.sai ${infile}.fa.gz | \
 samtools view -Sbh - | \
-samtools fixmate -m - | \ 
-samtools sort -@ 5 -T ${sample}.tmp - | \
-samtools markdup -r -s ${sample}.markdup.stats -T ${sample}.tmp - > ../bamfiles/${sample}.bam 
-samtools index ../bamfiles/${sample}.bam
+samtools fixmate -m - ${infile}.fixmate.bam
+samtools sort -T ${infile}.tmp ${infile}.fixmate.bam > ${infile}.fixmate.srt.bam
+samtools markdup -r -s -T ${infile}.tmp ${infile}.fixmate.srt.bam bamfiles/${sample}.bam
+samtools index bamfiles/${sample}.bam

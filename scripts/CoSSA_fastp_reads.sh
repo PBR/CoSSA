@@ -29,6 +29,7 @@ fi
 ##########################################
 # read quality check using FASTP
 ##########################################
+cd rawreads
 while read line
 do
 	sample=${line}
