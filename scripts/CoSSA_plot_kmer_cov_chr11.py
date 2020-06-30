@@ -20,7 +20,7 @@ with gzip.open(file, "rb") as f:
 
 ### add column names
 df.columns=['chr','position','end_position','coverage']
-print(df.head())
+print(df.head(20))
 grouped = pd.pivot_table(df.reset_index(), index='position', columns='chr', values='coverage')
 # get rid of the automatically created subplot titles
 s=['']
@@ -33,6 +33,5 @@ ax.axes.yaxis.set_ticks([])
 plt.ylabel='mean coverage per bin(0-1)'
 #plt.show()
 plt.savefig(file + '.png')
-
 
 

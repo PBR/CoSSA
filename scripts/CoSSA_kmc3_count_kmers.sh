@@ -47,7 +47,7 @@ do
 
         ### run kmc3
 	mkdir -p kmc_tmp
-	kmc -k31 -m2 @seqfiles.list ${sample} kmc_tmp > kmc.log
+	kmc -k31 -cs10000 -m2 @seqfiles.list ${sample} kmc_tmp > kmc.log
 
 	### create k-mer histogram
 	kmc_tools transform ${sample} histogram ${sample}.kmc3.histo

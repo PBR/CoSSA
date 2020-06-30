@@ -24,8 +24,8 @@ fi
 ##########################################
 # kmer coverage analysis
 ##########################################
-cd bamfiles
 
 mosdepth $1 $1
-python scripts/CoSSA_plot_kmer_cov.py $1.regions.bed.gz
-#python3 -m http.server 8000
+python scripts/CoSSA_plot_kmer_cov_chr11.py $1.regions.bed.gz
+cd bamfiles
+python3 -m http.server 8000
