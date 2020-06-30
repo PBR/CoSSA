@@ -8,7 +8,7 @@ display_usage()
    echo -e "\nUsage:\n$0 path_to/sample.bam\n" 1>&2
 }
 # if less than required arguments supplied, display usage
-if [  $# -ne 2 ]
+if [  $# -ne 1 ]
 then
    display_usage
    exit 1
@@ -21,12 +21,11 @@ then
 fi
 
 
-chmod +x ./miniconda/envs/CoSSA/bin/alfred_v0.2.1_linux_x86_64bit
-
 ##########################################
 # kmer coverage analysis
 ##########################################
 cd bamfiles
 
-alfred count_dna -o $1.cov.gz $1
-plot_kmercov_chr11.R $1.cov.gz
+mosdepth $1 $1
+python scripts/CoSSA_plot_kmer_cov.py $1.regions.bed.gz
+#python3 -m http.server 8000
