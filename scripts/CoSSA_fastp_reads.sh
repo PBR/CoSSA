@@ -48,7 +48,7 @@ do
 	-h ${wkdir}/${sample}_fastp.html \
 	-j ${wkdir}/${sample}_fastp.json \
 	-R "${sample} fastp report" \
-        -l 70 -y 20 -5 --cut_front_window_size 1 -3 --cut_tail_window_size 1 -r --reads_to_process 1000000
+        -l 70 -y 20 -5 --reads_to_process $1
 	cd ../
 
 done < genotypes.list
