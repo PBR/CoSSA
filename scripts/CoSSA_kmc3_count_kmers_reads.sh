@@ -51,6 +51,7 @@ do
 
 	### create k-mer histogram
 	kmc_tools transform ${sample} histogram ${sample}.kmc3.histo
+	### plot kmer profile	
+	python3 scripts/CoSSA_plot_kmer_profile.py ${sample}.kmc3.histo
 	cd ../../
-
 done < genotypes.list
