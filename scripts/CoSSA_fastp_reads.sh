@@ -11,7 +11,7 @@
 ############################
 display_usage()
 {
-   echo -e "\nUsage:\t$0 reads_to_process\n\n\tspecify how many reads/pairs to be processed. Default 0 means process all reads.\n" 1>&2
+   echo -e "\nUsage:\t$0 genotype.list reads_to_process\n\n\tspecify how many reads/pairs to be processed. Default 0 means process all reads.\n" 1>&2
 }
 # if less than required arguments supplied, display usage
 if [  $# -ne 1 ]
@@ -48,7 +48,7 @@ do
 	-h ${wkdir}/${sample}_fastp.html \
 	-j ${wkdir}/${sample}_fastp.json \
 	-R "${sample} fastp report" \
-        -l 70 -y 20 -5 --reads_to_process $1
+        -l 70 -y 20 -5 --reads_to_process $2
 	cd ../
 
-done < genotypes.list
+done < $1

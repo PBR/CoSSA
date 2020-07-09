@@ -12,7 +12,7 @@
 ############################
 display_usage()
 {
-   echo -e "\nUsage:\n$0\n" 1>&2
+   echo -e "\nUsage:\n$0 genotype.list\n" 1>&2
 }
 # if less than required arguments supplied, display usage
 if [  $# -ne 0 ]
@@ -54,4 +54,4 @@ do
 	### plot kmer profile	
 	python3 scripts/CoSSA_plot_kmer_profile.py ${sample}.kmc3.histo
 	cd ../../
-done < genotypes.list
+done < $1
