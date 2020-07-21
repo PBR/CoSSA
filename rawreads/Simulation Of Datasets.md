@@ -98,7 +98,7 @@ further in the script to a long running-time. So, this fragment arbitrarily
 defines a set of 100 SNP locations.
 
 ```{r eval=FALSE}
-snp_frq <- 0.04 # 1 SNP every 25 bp in potato
+snp_frq <- 0.04 
 n <- length(sen3)
 snploci <- sample(1:n, n * snp_frq )
 
