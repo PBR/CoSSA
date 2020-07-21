@@ -18,7 +18,7 @@ pipeline - not to model inheritance, a breeding program, or a
 gene.
 
 The focus is on the CoSSA pipeline, and for this, the datasets need only to contain
-distinct frequencies of k-mers - the underlying mechanism is of secondary interest. 
+distinct frequencies of k-mers - the underlying mechanism is secondary here. 
 Next, it should be possible to map the final list
 of k-mers on a real genome. Third, the scripts should run fast for a course and
 have small datasets.
@@ -83,7 +83,7 @@ d) use only R derived sequences in the R bulk
 In more detail:
 
 First, the script identifies a subsequence with no missing bases (N). Then it
-sets the R region and the SNP.
+sets the R region or range and the arbitrary SNP locus to a different base.
 
 ```{r r_def, eval=FALSE}
 sen3 <- sen3[2700:31800] # N-free subsequence
@@ -94,8 +94,8 @@ r_locus[500] <- "T" # instead of G
 ```
 
 SNPs are assumed to occur with a frequency of 0.04. However, this would lead 
-further in the script to a long running-time. So, this fragment arbitrarily 
-defines a set of 100 SNP locations.
+further in the simulation script to a long running-time and bigger fasta 
+files. So, this fragment arbitrarily defines a sub-set of 100 SNP locations.
 
 ```{r eval=FALSE}
 snp_frq <- 0.04 
@@ -109,7 +109,7 @@ haplo <- sample(snploci, m)
 
 In the next steps, all the sequences are ‘mutated’ at the ‘haplo’ locations. 
 In the case of R sequences, the presence of the R locus is assured by merely 
-re-inserting the original ‘r_locus’ (see r_def script) sequence. Lastly, the script 
+re-inserting the original ‘r_locus’ sequence. Lastly, the script 
 writes the result as a fasta file as the starting point for the second phase.
 
 The creation of the S parent is similar: it omits the steps to assure
@@ -120,13 +120,14 @@ the S-bulk consists of ten mutated sequences plus five with assured R presence,
 the R-bulk consists of five mutated sequences with assured R locus presence.
 
 
-### Phase 2: Creation of Paired-end Read Files
+### Phase 2: Creation of Compressed Paired-end Read Files
 
 This phase is for both datasets largely the same. The script uses the Julia library
 Pseudoseq for the main work. 
 The coverage (cov) and the 'initial number of genome copies' (ng) parameters were 
 tuned to achieve 
-a similar small file size. 
+a similar small file size. Coverage is 50 for the parents, 15 for the S-bulk, 
+and 20 for the R-bulk.
 
-The read length parameter is 150bp, with an error rate of 0.001.
+The read length parameter is 150bp, with a sequencing error rate of 0.001.
 The other parameters follow the Pseudoseq tutorial.
