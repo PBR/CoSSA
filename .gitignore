@@ -2,14 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-*.sh
 data
-fastp.html
-fastp.json
-cossa_check.R
-deinterleave.sh
-split_cossa.sh
 temp
-*.fa
-map_r_locus.sh
 bamfiles
