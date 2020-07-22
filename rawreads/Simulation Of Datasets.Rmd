@@ -1,0 +1,103 @@
+---
+title: "Simulation of Small but Representative Datasets to Teach the CoSSA Pipeline"
+author: "Reinhard Simon, Herman van Eck"
+date: "7/22/2020"
+output:
+  html_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Objective
+
+Simulate datasets to serve as minimal working examples for the CoSSA pipeline (Prodhomme et al., 2019) - not to model inheritance, a breeding program, or a gene. The focus is to get familiar with computational genomics in a Unix environment and specifically on the CoSSA pipeline. For this, the datasets only need to contain a distinct list of k-mers. Next, it should be possible to map the list of k-mers on a real genome. Third, the CoSSA pipeline should run fast for a course on a stand-alone PC and therefore use small datasets.
+
+## Implementation
+
+The implementing simulation scripts have two phases:
+
+- the creation of biological variability; manually or in R script (R Core Team, 2020)
+- the creation of sequencing reads with error rate; with Julia scripts (Bezanson, Edelman, Karpinski, & Shah, 2017)
+
+In the first phase, the simulations use a real gene locus from the potato genome (so results of the CoSSA pipeline can be mapped), and introduce arbitrary variations based on SNPs. There are two datasets of increasing complexity. Both use the sen3 locus from the potato reference genome as a starting point (see the CoSSA paper on details on the locus). The following R script fragment shows the exact steps.
+
+
+
+```{r eval=FALSE}
+library(BSgenome.Stuberosum.PGSC.DM3404)
+dm <- BSgenome.Stuberosum.PGSC.DM3404::BSgenome.Stuberosum.PGSC.DM3404
+ch11 <- dm$chr11
+sen3 <- ch11[1259552:1772869]
+```
+
+### Phase 1: Creation of biological variability
+
+#### Dataset 1
+
+This dataset serves to illustrate the use of Set Theory as a method to collect a specific subset of SNPs associated with a genetic trait. It consists of the DNA sequence of the haplotype with the Sen3 locus from a resistant potato variety, and of one arbitrary haplotype where SNPs were manually introduced into the same sequence to model a second haplotype. One SNP will already result in a list with k new k-mers. The read simulation (details below in the section on Phase II) produces paired-end read files with a length of 150 bp and an error rate of 0.001.
+
+The resulting files of the two haplotypes are in the sub-directory: https://github.com/PBR/CoSSA/tree/master/rawreads 
+
+-	CoSSA_toy1
+- CoSSA_toy2
+
+This dataset facilitates getting the list of haplotype-specific k-mers by comparing toy2 with toy1. The resulting list of k-mers maps on chromosome 11. It is a minimal example since it only needs one Set-operation, and it assumes a haploid organism.
+
+
+#### Dataset 2
+
+The second dataset allows the application of a more typical Set Operations scenario, such as a Bulked Segregant Analysis. It consists of the files in the subdirectories: R_bulk, S_bulk, R_parent, and S_parent.
+
+In brief, the main ideas in the simulation script are to:
+
+a)	Again use the DNA sequence of the haplotype with the Sen3 locus as a starting point for all derived sequences.
+b)	Add more variability into the derived sequences by randomly introducing SNPs: the more variability, the more k-mers, and the bigger the resulting file size. The variability is at a low amount to keep the file size small. Here, the number of SNP loci chosen is 100 in a sequence with a length of 29100bp. It is much lower than in real potato haplotypes, however.
+c)	Use only sequences with the R locus in the parent and the R bulk. So, the resistant parent is homozygous in the R locus region, but the rest of the virtual homologs are variable at various loci.
+d)	Use four different copies for the S parent: one is the original sequence, the others are variations.
+e)	Use a mixture of R and S sequences in the S bulk. The R bulk has only homologs from the R parent.
+
+In more detail:
+
+First, the script identifies a subsequence with no missing bases (N). Then it sets the R region or range and the arbitrary SNP locus to a base different from the reference base. It maps around position 130000bp on chromosome 11.
+
+
+```{r r_def, eval=FALSE}
+sen3 <- sen3[2700:31800] # N-free subsequence
+
+r_range <- range(2501, 3500)
+r_locus <- sen3[r_range[1]:r_range[2]]
+r_locus[500] <- "T" # instead of G
+
+```
+
+In the next steps, first, the tetraploid parent sequences are generated. For simplicity, the sen3 sequence is the template for all derived sequences. For the S parent, one copy is the original one. Then, the script creates three haplotypes by selecting a subset of the SNP locations of different sizes with some shared locations.
+In the case of the R parent sequences, the first two homologs are the same as in the S parent, and then the script adds two distinct derived homologs. The R locus’s presence is assured by merely re-inserting the original haplotype with the Sen3 locus.
+
+For the bulks, the script creates the S-bulk with two copies of the S parent and one copy of the R parent. The R bulk is the same as the R parent. 
+
+### Phase 2: Creation of Compressed Paired-end Read Files
+
+This phase is for both datasets largely the same. The script uses the Julia library Pseudoseq (Ward, 2020) for the main work.
+The software modifies DNA sequences following the steps of a sequencing experiment (for more details see: https://bioinfologics.github.io/Pseudoseq.jl/dev/man/sequencing/concepts/):
+
+1.	It creates a pool of virtual DNA molecule copies from a set of template sequences (or haplotypes). Here, the script uses the FASTA files created in the first phase as a template. The pool size is a total of 5000 copies of the original sequences following the software tutorial. This pooling corresponds to a preliminary step of standardizing and multiplying DNA molecules by, for example, a PCR.
+2.	Then it fragments the virtual DNA molecules and randomly subsamples them. The average fragmentation size is 700bp, again as per the Pseudoseq tutorial.
+3.	It generates (paired-end) reads with a specified error frequency from the samples.
+4.	It saves the reads in a standard format (FASTA) for read-archives.
+
+The coverage (cov) and the ‘initial number of genome copies’ (ng) parameters were tuned to achieve a similar small file size. Coverage is 50 for the parents, and 70 for the two bulks.
+
+The read length parameter has a value of 150bp, with a sequencing error rate of 0.001. The other parameter settings follow the Pseudoseq tutorial.
+
+### References
+
+Bezanson, J., Edelman, A., Karpinski, S., & Shah, V. B. (2017). Julia: A fresh approach to numerical computing. SIAM Review, 59(1), 65–98. Retrieved from https://doi.org/10.1137/141000671
+
+Prodhomme, C., Esselink, D., Borm, T., Visser, R. G. F., van Eck, H. J., & Vossen, J. H. (2019). Comparative Subsequence Sets Analysis (CoSSA) is a robust approach to identify haplotype-specific SNPs, mapping, and pedigree analysis of a potato wart disease resistance gene Sen3. Plant Methods, 15(1), 60. https://doi.org/10.1186/s13007-019-0445-5
+
+R Core Team. (2020). R: A Language and Environment for Statistical Computing. Retrieved from https://www.r-project.org/
+
+Ward, B. J. (2020, March). bioinfologics/Pseudoseq.jl: v0.2.0. https://doi.org/10.5281/zenodo.3707856
