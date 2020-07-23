@@ -55,9 +55,7 @@ In brief, the main ideas in the simulation script are to:
 
 a)	Again use the DNA sequence of the haplotype with the Sen3 locus as a starting point for all derived sequences.
 b)	Add more variability into the derived sequences by randomly introducing SNPs: the more variability, the more k-mers, and the bigger the resulting file size. The variability is at a low amount to keep the file size small. Here, the number of SNP loci chosen is 100 in a sequence with a length of 29100bp. It is much lower than in real potato haplotypes, however.
-c)	Use only sequences with the R locus in the parent and the R bulk. So, the resistant parent is homozygous in the R locus region, but the rest of the virtual homologs are variable at various loci.
-d)	Use four different copies for the S parent: one is the original sequence, the others are variations.
-e)	Use a mixture of R and S sequences in the S bulk. The R bulk has only homologs from the R parent.
+c)	Use a tetraploid model.
 
 In more detail:
 
@@ -76,7 +74,7 @@ r_locus[500] <- "T" # instead of G
 In the next steps, first, the tetraploid parent sequences are generated. For simplicity, the sen3 sequence is the template for all derived sequences. For the S parent, one copy is the original one. Then, the script creates three haplotypes by selecting a subset of the SNP locations of different sizes with some shared locations.
 In the case of the R parent sequences, the first two homologs are the same as in the S parent, and then the script adds two distinct derived homologs. The R locus’s presence is assured by merely re-inserting the original haplotype with the Sen3 locus.
 
-For the bulks, the script creates the S-bulk with two copies of the S parent and one copy of the R parent. The R bulk is the same as the R parent. 
+For the bulks, the script creates the S-bulk with two copies of the S parent and copies of the R parent. The R bulk contains homologs from the S parent and the R parent. 
 
 ### Phase 2: Creation of Compressed Paired-end Read Files
 
