@@ -51,7 +51,7 @@ do
 	kmc -k31 -cs10000 -m2 @seqfiles.list ${sample} kmc_tmp > kmc.log
 
 	### create k-mer histogram
-	kmc_tools transform ${sample} histogram ${sample}.kmc3.histo
+	kmc_tools transform ${sample} histogram ${sample}.kmc3.histo -ci5
 	### plot kmer profile	
 	python3 ../../../scripts/CoSSA_plot_kmer_profile.py ${sample}.kmc3.histo
 	cd ../../

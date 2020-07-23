@@ -38,8 +38,6 @@ gzip > ${infile}.fa.gz
 mkdir -p bamfiles
 bwa aln -n 3 ${ref} ${infile}.fa.gz > ${infile}.sai
 bwa samse ${ref} ${infile}.sai ${infile}.fa.gz | \
-samtools view -Sbh - | \
-samtools fixmate -m - ${infile}.fixmate.bam
-samtools sort -T ${infile}.tmp ${infile}.fixmate.bam > ${infile}.fixmate.srt.bam
-samtools markdup -r -s -T ${infile}.tmp ${infile}.fixmate.srt.bam bamfiles/${sample}.bam
-samtools index bamfiles/${sample}.bam
+sambamba view -S -f bam /dev/stdin | \
+sambamba sort --tmpdir ${infile}.tmp /dev/stdin -o ${infile}.srt.bam
+sambamba markdup -r --tmpdir ${infile}.tmp ${infile}.srt.bam bamfiles/${sample}.bam

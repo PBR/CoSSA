@@ -24,7 +24,7 @@ fi
 # subtraction of kmers
 ##########################################
 # in case the sample name with the kmc extension is given
-infile1=$(echo "$1" | sed 's/\.kmc_...//')
+sample=$(echo "$1" | sed 's/\.kmc_...//')
 
 ### run kmc_tools substract kmers of sample1 with kmers of sample2 to obtain sample1 specific kmers
 kmc_tools transform ${sample} dump ${sample}.dump
