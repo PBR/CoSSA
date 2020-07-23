@@ -15,7 +15,7 @@ display_usage()
    echo -e "\nUsage:\n$0 genotype.list\n" 1>&2
 }
 # if less than required arguments supplied, display usage
-if [  $# -ne 0 ]
+if [  $# -ne 1 ]
 then
    display_usage
    exit 1
@@ -35,6 +35,7 @@ cd rawreads
 
 while read line
 do
+	echo "sample: $line"
         sample=${line}
         cd ${sample}
 
@@ -52,6 +53,6 @@ do
 	### create k-mer histogram
 	kmc_tools transform ${sample} histogram ${sample}.kmc3.histo
 	### plot kmer profile	
-	python3 scripts/CoSSA_plot_kmer_profile.py ${sample}.kmc3.histo
+	python3 ../../../scripts/CoSSA_plot_kmer_profile.py ${sample}.kmc3.histo
 	cd ../../
 done < $1

@@ -14,7 +14,7 @@ display_usage()
    echo -e "\nUsage:\t$0 genotype.list reads_to_process\n\n\tspecify how many reads/pairs to be processed. Default 0 means process all reads.\n" 1>&2
 }
 # if less than required arguments supplied, display usage
-if [  $# -ne 1 ]
+if [  $# -ne 2 ]
 then
    display_usage
    exit 1
