@@ -25,9 +25,10 @@ grouped = pd.pivot_table(df.reset_index(), index='position', columns='chr', valu
 # get rid of the automatically created subplot titles
 s=['']
 grouped.plot(subplots=True, kind='bar', title=s, sharex=True, sharey=True ) 
-plt.suptitle('Mean K-mer coverage per 100kb per chromosome ')
+plt.suptitle('Mean K-mer coverage per bins of 1kb  ')
 plt.subplots_adjust(left=0.05, right=0.95, bottom=0.05, top=0.95, hspace=0)
-plt.ylim(0,1)
+#plt.ylim(0,1)
+plt.xlim(1200,1400)
 ax = plt.gca()
 ax.axes.yaxis.set_ticks([])
 plt.ylabel='mean coverage per bin(0-1)'
